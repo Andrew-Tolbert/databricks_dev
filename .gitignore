@@ -1,0 +1,4 @@
+.DS_Store
+fitbit/creds.json
+fitbit/__pycache__/
+fitbit/0_admin/
