@@ -19,6 +19,8 @@ from datetime import timedelta
 date_0 = date.today().strftime('%Y-%m-%d')
 date_1 = (date.today() - timedelta(days = 1)).strftime('%Y-%m-%d')
 date_7 = (date.today() - timedelta(days = 7)).strftime('%Y-%m-%d')
+# for bulk data 
+date_120 = (date.today() - timedelta(days = 120)).strftime('%Y-%m-%d') 
 
 # Define JSON data
 def get_creds():

@@ -7,12 +7,17 @@ Created on Sat Feb 11 14:05:19 2023
 """
 import requests
 import boto3 
-import json
+from datetime import date
+from datetime import timedelta
+ 
 
 from var_config import base_url, bucket, date_0, date_1
 
-from var_config import access_token, user_id, aws_access_key, aws_secret_key
+from var_config import get_creds,get_iam_creds
 
+
+(access_token, refresh_token,user_id) = get_creds()
+(aws_access_key, aws_secret_key) = get_iam_creds()
 
 def get_activities(date): 
     url = f"{base_url}1/user/{user_id}/activities/date/{date}.json"
@@ -30,7 +35,21 @@ def get_activities(date):
     return filename,response.text
 
 
-filename,date_json = get_activities(date_0)
+def get_sleep(date): 
+    url = f"{base_url}1.2/user/{user_id}/sleep/date/{date}.json"
+    
+    payload={
+        }
+    headers = {
+      'Authorization': f"Bearer {access_token}"
+    }
+    
+    response = requests.request("GET", url, headers=headers, data=payload)
+    
+    filename = "sleep_" + date.replace("-","") + ".json"
+    
+    return filename,response.text
+
 
 
 s3 = boto3.client("s3", 

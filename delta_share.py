@@ -17,19 +17,17 @@ client = delta_sharing.SharingClient(profile_file)
 # List all shared tables.
 client.list_all_tables()
 
-schema = '#aht_sa.aht_bm3'
+schema = '#aht_sa.aht_sa' 
 
 # Create a url to access a shared table.
 # A table path is the profile file path following with `#` and the fully qualified name of a table 
 # (`<share-name>.<schema-name>.<table-name>`).
-table_url = profile_file + f"{schema}.gold_ds_sensor"
-
-# Fetch 10 rows from a table and convert it to a Pandas DataFrame. This can be used to read sample data 
-# from a table that cannot fit in the memory.
-delta_sharing.load_as_pandas(table_url, limit=10)
+table_url = profile_file + f"{schema}.fitbit_sleep_silver"
 
 # Load a table as a Pandas DataFrame. This can be used to process tables that can fit in the memory.
 df = delta_sharing.load_as_pandas(table_url)
 
-# If the code is running with PySpark, you can use `load_as_spark` to load the table as a Spark DataFrame.
-delta_sharing.load_as_spark(table_url)
+df = df.drop(columns=['name', 'endTime'])
+df = df.set_index(list(df)[0])
+
+ax = df.plot(kind='bar',alpha=0.75, rot='vertical')
