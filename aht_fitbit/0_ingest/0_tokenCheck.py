@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %run ./0_ingestMaster 
+# MAGIC %run ./0_ingestMain
 
 # COMMAND ----------
 
@@ -23,8 +23,4 @@ if err == 1:
     print("Token Refreshed!")
 else: 
   print("Token is Valid!")
-
-
-# COMMAND ----------
-
 
