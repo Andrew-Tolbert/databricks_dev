@@ -34,7 +34,7 @@ ingest_df.createOrReplaceTempView("ingest")
 
 # MAGIC %sql
 # MAGIC MERGE INTO referrers
-# MAGIC USING ingest ON ingest.ingestDate = referrers.ingestDate 
+# MAGIC USING ingest ON ingest.ingestDate = referrers.ingestDate  AND ingest.referrer = referrers.referrer
 # MAGIC WHEN MATCHED THEN UPDATE SET * 
 # MAGIC WHEN NOT MATCHED THEN INSERT * 
 
@@ -61,7 +61,7 @@ path_ingest_df.createOrReplaceTempView("paths_ingest")
 
 # MAGIC %sql
 # MAGIC MERGE INTO referral_paths
-# MAGIC USING paths_ingest ON paths_ingest.ingestDate = referral_paths.ingestDate 
+# MAGIC USING paths_ingest ON paths_ingest.ingestDate = referral_paths.ingestDate AND paths_ingest.path = referral_paths.path
 # MAGIC WHEN MATCHED THEN UPDATE SET * 
 # MAGIC WHEN NOT MATCHED THEN INSERT * 
 
@@ -69,7 +69,3 @@ path_ingest_df.createOrReplaceTempView("paths_ingest")
 
 # MAGIC %sql
 # MAGIC select * from referral_paths order by count desc
-
-# COMMAND ----------
-
-
