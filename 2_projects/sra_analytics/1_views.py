@@ -35,13 +35,22 @@ ingest_df.createOrReplaceTempView("ingest")
 
 # COMMAND ----------
 
+ingest_df.display()
+
+# COMMAND ----------
+
 # MAGIC %sql
 # MAGIC MERGE INTO views
 # MAGIC USING ingest ON ingest.date = views.date 
-# MAGIC WHEN MATCHED AND views.date >= ingest.ingestDate THEN UPDATE SET * 
+# MAGIC -- update yesterdays date because we didn't catch that after a full day 
+# MAGIC WHEN MATCHED AND date_add(views.date,1) >= ingest.ingestDate THEN UPDATE SET * 
 # MAGIC WHEN NOT MATCHED THEN INSERT * 
 
 # COMMAND ----------
 
 # MAGIC %sql
 # MAGIC select * from views
+
+# COMMAND ----------
+
+

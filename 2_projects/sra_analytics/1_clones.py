@@ -38,14 +38,10 @@ ingest_df.createOrReplaceTempView("ingest")
 # MAGIC %sql
 # MAGIC MERGE INTO clones
 # MAGIC USING ingest ON ingest.date = clones.date 
-# MAGIC WHEN MATCHED AND clones.date >= ingest.ingestDate THEN UPDATE SET * 
+# MAGIC WHEN MATCHED AND date_add(clones.date,1) >= ingest.ingestDate THEN UPDATE SET * 
 # MAGIC WHEN NOT MATCHED THEN INSERT * 
 
 # COMMAND ----------
 
 # MAGIC %sql
 # MAGIC select * from clones
-
-# COMMAND ----------
-
-
