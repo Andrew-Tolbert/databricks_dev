@@ -19,11 +19,11 @@ df = response_2_df(repo,'popular/referrers')
 
 # COMMAND ----------
 
-from pyspark.sql.functions import explode, current_date
+from pyspark.sql.functions import explode
 from delta.tables import *
 
 daily_df = (df
-            .selectExpr("current_date() as ingestDate","*")
+            .selectExpr("date_est() as ingestDate","*")
 )
 
 ingest_df = daily_df
@@ -50,7 +50,7 @@ path_df = response_2_df(repo,'popular/paths')
 # COMMAND ----------
 
 path_daily_df = (path_df
-            .selectExpr("current_date() as ingestDate","*")
+            .selectExpr("date_est() as ingestDate","*")
 )
 
 path_ingest_df = path_daily_df

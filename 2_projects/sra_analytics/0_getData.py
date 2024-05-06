@@ -5,6 +5,12 @@ import json
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC USE CATALOG shared; 
+# MAGIC USE SCHEMA sra;
+
+# COMMAND ----------
+
 token = dbutils.secrets.get("sra_tf","git_api")
 
 # COMMAND ----------
@@ -27,4 +33,10 @@ def response_2_df(repo,endpoint):
 
 # COMMAND ----------
 
-
+# MAGIC %sql
+# MAGIC -- Create a temporary function with no parameter.
+# MAGIC CREATE FUNCTION IF NOT EXISTS date_est() 
+# MAGIC RETURNS DATE 
+# MAGIC RETURN CAST(timestampadd(HOUR,-4,current_timestamp()) as DATE) ; 
+# MAGIC
+# MAGIC SELECT date_est()
