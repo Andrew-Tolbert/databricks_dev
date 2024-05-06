@@ -39,4 +39,8 @@ def response_2_df(repo,endpoint):
 # MAGIC RETURNS DATE 
 # MAGIC RETURN CAST(timestampadd(HOUR,-4,current_timestamp()) as DATE) ; 
 # MAGIC
-# MAGIC SELECT date_est()
+# MAGIC SELECT date_est() as Update_Time
+
+# COMMAND ----------
+
+
