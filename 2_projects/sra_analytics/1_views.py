@@ -49,7 +49,9 @@ ingest_df.display()
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC select * from views
+# MAGIC select 
+# MAGIC * 
+# MAGIC from views
 
 # COMMAND ----------
 
