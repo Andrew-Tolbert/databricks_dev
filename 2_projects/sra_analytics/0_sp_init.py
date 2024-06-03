@@ -1,4 +1,9 @@
 # Databricks notebook source
+# MAGIC %md 
+# MAGIC ### ## This notebook is not necessary as of now but contains the starting point to creating a SP to run the workflow
+
+# COMMAND ----------
+
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service import iam
 
@@ -17,10 +22,6 @@ spn = w.service_principals.create(id = 'sra-jobRunner',
 # COMMAND ----------
 
 obo = w.token_management.create_obo_token(application_id=spn.application_id,lifetime_seconds='')
-
-# COMMAND ----------
-
-obo
 
 # COMMAND ----------
 

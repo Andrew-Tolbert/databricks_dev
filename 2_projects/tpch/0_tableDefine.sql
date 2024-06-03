@@ -1,8 +1,13 @@
 -- Databricks notebook source
 USE CATALOG shared; 
-
 USE SCHEMA tpch; 
 
+
+-- COMMAND ----------
+
+SELECT 
+* 
+from orders where o_orderpriority like concat(:pkey,'%')
 
 -- COMMAND ----------
 
@@ -160,6 +165,48 @@ INSERT INTO part (
 
 select * from part; 
 
+
+-- COMMAND ----------
+
+CREATE OR REPLACE TABLE supplier  (
+  `s_suppkey`     INT,
+  `s_name`        CHAR(25),
+  `s_address`     VARCHAR(40),
+  `s_nationkey`   INT,
+  `s_phone`       CHAR(15),
+  `s_acctbal`     DECIMAL(15,2),
+  `s_comment`     VARCHAR(101),
+  `s_dummy` varchar(10),
+  PRIMARY KEY (`s_suppkey`),
+   FOREIGN KEY (`s_nationkey`) REFERENCES nation (`n_nationkey`)
+  )
+  TBLPROPERTIES (
+   'delta.columnMapping.mode' = 'name',
+   'delta.minReaderVersion' = '2',
+   'delta.minWriterVersion' = '5')
+  ;
+
+
+INSERT INTO supplier (
+ SELECT 
+  _c0 as  `s_suppkey`, 
+  _c1 as  `s_name` ,
+  _c2 as  `s_address`,
+  _c3 as  `s_nationkey`,
+  _c4 as  `s_phone`,
+  _c5 as  `s_acctbal`,
+  _c6 as `s_comment` , 
+  _c7 as `dummy`
+  FROM read_files(
+  '/Volumes/shared/tpch/raw_data/supplier.csv.gz',
+  format => 'csv',
+  header => 'false',
+  delimiter => '|'
+)
+)
+;
+
+select * from supplier; 
 
 -- COMMAND ----------
 
