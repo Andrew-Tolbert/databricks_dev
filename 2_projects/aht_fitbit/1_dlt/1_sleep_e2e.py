@@ -1,7 +1,7 @@
 # Databricks notebook source
 # MAGIC %md-sandbox 
 # MAGIC
-# MAGIC ## Fitbit sleep DLT Pipeline
+# MAGIC ## Fitbit DLT Pipeline
 
 # COMMAND ----------
 
@@ -12,7 +12,7 @@ vol = '/Volumes/ahtsa/fitbit/raw_fitbitapi'
 # COMMAND ----------
 
 import dlt
-import pyspark.sql.functions as F
+from pyspark.sql.functions import explode, struct, from_json,col,first,arrays_zip,col,map_from_entries,expr,to_timestamp,to_date,array
 
 # COMMAND ----------
 
@@ -25,8 +25,8 @@ def bronze_sleep():
     .option("cloudFiles.format", "json")
     .option("cloudFiles.inferColumnTypes", "true")
     .load(f"{vol}/sleep")
-    .filter(F.col("sleep") !=F.array())
-    .select('summary',F.explode('sleep').alias('sleep'))
+    .filter(col("sleep") !=array())
+    .select('summary',explode('sleep').alias('sleep'))
     )
 
 # COMMAND ----------
@@ -37,30 +37,15 @@ def bronze_sleep():
 def silver_sleep():
   return (
     dlt.read('bronze_sleep')
-    .select(F.to_date(F.col('sleep.dateOfSleep'), 'yyyy-MM-dd').alias('dateOfSleep')
-            ,F.to_timestamp(F.col('sleep.startTime')).alias('startTime')
-            ,F.to_timestamp(F.col('sleep.endTime')).alias('endTime')
-            ,F.col('summary.totalMinutesAsleep').cast('int').alias('totalMinutesAsleep')
-            ,F.col('summary.totalSleepRecords').cast('int').alias('totalSleepRecords')
-            ,F.col('summary.totalTimeInBed').cast('int').alias('totalTimeInBed')
-            ,F.col('sleep.efficiency').cast('int').alias('efficiency')
-            ,F.col('sleep.isMainSleep').alias('isMainSleep')
+    .select(to_date(col('sleep.dateOfSleep'), 'yyyy-MM-dd').alias('dateOfSleep')
+            ,to_timestamp(col('sleep.startTime')).alias('startTime')
+            ,to_timestamp(col('sleep.endTime')).alias('endTime')
+            ,col('summary.totalMinutesAsleep').cast('int').alias('totalMinutesAsleep')
+            ,col('summary.totalSleepRecords').cast('int').alias('totalSleepRecords')
+            ,col('summary.totalTimeInBed').cast('int').alias('totalTimeInBed')
+            ,col('sleep.efficiency').cast('int').alias('efficiency')
+            ,col('sleep.isMainSleep').alias('isMainSleep')
             ,'summary.stages'
             )
     .sort("dateOfSleep", ascending=False)
     )
-
-# COMMAND ----------
-
-# @dlt.table(
-#   comment="Parsing fitbit activity Log data from JSON delivery - using volumes - there WILL be duplicates in this table"
-# )
-# def bronze_activities():
-#   return (
-#     spark.readStream.format("cloudFiles")
-#     .option("cloudFiles.format", "json")
-#     .option("cloudFiles.inferColumnTypes", "true")
-#     .load(f"{vol}/sleep")
-#     #.filter(F.col("sleep") !=F.array())
-#     #.select('summary',F.explode('sleep').alias('sleep'))
-#     )
