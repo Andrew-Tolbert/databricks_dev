@@ -9,6 +9,8 @@ env:
     valueFrom: "sql_warehouse"
   - name: "SERVING_ENDPOINT"
     valueFrom: "serving_endpoint"
+  - name: 'SECRET_KEY'
+    valueFrom: 'current_pat'
   - name: "UPLOAD_VOLUME"
     value: "/Volumes/ahtsa/lhapps/app_uploads"
   - name: STREAMLIT_BROWSER_GATHER_USAGE_STATS
