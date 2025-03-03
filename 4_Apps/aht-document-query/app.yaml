@@ -6,10 +6,10 @@ command: [
 
 env:
   - name: "DATABRICKS_WAREHOUSE_ID"
-    valueFrom: "sql-warehouse"
+    valueFrom: "sql_warehouse"
   - name: "SERVING_ENDPOINT"
     valueFrom: "serving_endpoint"
   - name: "UPLOAD_VOLUME"
-    value: "/Volumes/ahtsa_dev/lhapps/uploads"
+    value: "/Volumes/ahtsa/lhapps/app_uploads"
   - name: STREAMLIT_BROWSER_GATHER_USAGE_STATS
     value: "false"
