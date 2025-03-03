@@ -12,16 +12,18 @@ st.set_page_config(
 
 
 from databricks.connect import DatabricksSession as SparkSession
-var_host = 'e2-demo-field-eng.cloud.databricks.com'
-var_cluster_id = '0303-153924-q0hq3d9a'
-secret_value = os.getenv('SECRET_KEY')
 
 
-#spark =  SparkSession.builder.remote(serverless=True).getOrCreate() # - For Serverless
-spark = SparkSession.builder.remote(
-host       = f"https://{var_host}",
-cluster_id = f"{var_cluster_id}"
-).getOrCreate()
+# - For Serverless
+spark =  SparkSession.builder.remote(serverless=True).getOrCreate()
+
+# - For Classic (you will need to provision SP to have can manage permissions)
+# var_host = 'e2-demo-field-eng.cloud.databricks.com'
+# var_cluster_id = '<clusterid_here>'
+# spark = SparkSession.builder.remote(
+# host       = f"https://{var_host}", 
+# cluster_id = f"{var_cluster_id}"
+# ).getOrCreate()
 
 
 df = spark.sql("select * from ahtsa.fitbit.silver_activities").groupBy("id_activity").agg(sum("steps").alias("total_steps")
