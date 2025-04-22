@@ -1,2 +1,6 @@
 pypdf==5.0.1
 databricks-connect==16.0.0
+streamlit_lightweight_charts==0.7.20
+streamlit-date-picker
+pyxlsb
+xlsxwriter
