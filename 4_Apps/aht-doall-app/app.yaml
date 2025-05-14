@@ -15,3 +15,8 @@ env:
     value: "/Volumes/ahtsa/lhapps/app_uploads"
   - name: STREAMLIT_BROWSER_GATHER_USAGE_STATS
     value: "false"
+  - name: USE_SERVERLESS
+    value: True
+  - name: CLASSIC_CLUSTER_ID
+    value: "0303-153924-q0hq3d9a"
+  
